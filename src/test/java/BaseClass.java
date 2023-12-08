@@ -1,9 +1,11 @@
+import com.applitools.eyes.MatchLevel;
+import com.applitools.eyes.selenium.Eyes;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,6 +19,7 @@ public class BaseClass extends Reports {
     }
 
     static AppiumDriver driver;
+    static Eyes eyes;
 
     @BeforeTest
     public static void SetUp() throws MalformedURLException {
@@ -37,14 +40,18 @@ public class BaseClass extends Reports {
         URL url = new URL("http://127.0.0.1:4723/wd/hub");
 
         driver = new AppiumDriver(url, caps);
+        eyes = new Eyes();
+        eyes.setApiKey("0Q9945yrgpeoLrJTR9pzXRIo1Uh2VW897AqU1ACaLVpC0110");
+        eyes.setMatchLevel(MatchLevel.STRICT);
         System.out.println("Application Started");
 //        WebElement clock = driver.findElement(By.xpath("//nh[@content-desc=\"Alarm\"]/android.widget.ImageView"));
 //        clock.click();
     }
 
-    @Test
+    @AfterTest
     public void TearDown() {
-        driver.close();
+        driver.quit();
+        eyes.abortIfNotClosed();
     }
 
 
